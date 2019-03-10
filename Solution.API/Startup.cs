@@ -14,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Solution.API.Middlewares;
+using Solution.API.Middleware;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Solution.API
@@ -49,6 +49,8 @@ namespace Solution.API
             services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddApiVersioning();
 
             // https://github.com/aspnet/Hosting/issues/793
             // the IHttpContextAccessor service is not registered by default.
@@ -86,7 +88,7 @@ namespace Solution.API
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
 
-            app.UseMiddleware<MyIpRateLimitMiddleware>();
+            app.UseMiddleware<MyIPRateLimitMiddleware>();
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
